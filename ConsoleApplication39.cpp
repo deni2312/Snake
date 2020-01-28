@@ -9,10 +9,31 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
 }
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow *window, char &b)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		b = 'w';
+	}
+	else {
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			b = 'a';
+		}
+		else {
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+				b = 's';
+			}
+			else {
+				if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+					b = 'd';
+				}
+				else {
+					b = 'u';
+				}
+			}
+		}
+
+	}
+		
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -155,7 +176,7 @@ int main()
 
 		// input
 		// -----
-		processInput(window);
+		
 
 		// render
 		// ------
@@ -169,8 +190,9 @@ int main()
 
 		}
 		char b;
-		if (_kbhit()) {
-			b = _getch();
+		processInput(window,b);
+		if (b!='u') {
+			
 			if (b == 'a' && k!='d') {
 				ActSna.sinistra();
 				k = b;
