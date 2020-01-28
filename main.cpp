@@ -119,13 +119,6 @@ int main()
 	float mat[50][50];
 	GLuint VBO, VAO, EBO;
 
-	float vert[12] = {			// positions          // colors           // texture coords
-	 1.0f,  1.0f, 1.0f,
-	 1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,  1.0f, 1.0f, };
-	// uncomment this call to draw in wireframe polygons.
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	float vertices[12] = {			// positions          // colors           // texture coords
 		 -0.967f,  1.0f, 0.0f,
 		-0.967f, 0.967f, 0.0f,
@@ -157,12 +150,7 @@ int main()
 	srand(time(NULL));
 	fru.x = rand() % (RIGHE - 10) + 1;
 	fru.y = rand() % (COLONNE - 10) + 1;
-	int h;
-	int p;
-	int g;
-	int r;
-	int u;
-	int n;
+
 	char k = 'w';
 	bool fine = false;
 	cam[fru.y][fru.x] = 'p';
@@ -174,13 +162,7 @@ int main()
 	{
 	
 
-		// input
-		// -----
-		
 
-		// render
-		// ------
-		
 		if (ActSna.getX() == fru.x && ActSna.getY() == fru.y) {
 			ActSna.mangia();
 			fru.x = rand() % (RIGHE - 10) + 1;
@@ -230,117 +212,86 @@ int main()
 			fine = true;
 		}
 		
-				glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				for (int i = 0; i < COLONNE; i++) {
-					for (int j = 0; j < RIGHE; j++) {
-						if (cam[i][j] == '1') {
-							glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-							transform = glm::translate(transform, glm::vec3(j*0.033f, -i*0.033f, 0.0f));
-							int vertexColorLocation = glGetUniformLocation(o, "ourColor");
-							glUniform4f(vertexColorLocation, 0.0f, 1.0, 0.0f, 1.0f);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		for (int i = 0; i < COLONNE; i++) {
+			for (int j = 0; j < RIGHE; j++) {
+				if (cam[i][j] == '1') {
+					glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+					transform = glm::translate(transform, glm::vec3(j*0.033f, -i*0.033f, 0.0f));
+					int vertexColorLocation = glGetUniformLocation(o, "ourColor");
+					glUniform4f(vertexColorLocation, 0.0f, 1.0, 0.0f, 1.0f);
 
-							// draw our first triangle
-							glUseProgram(o);
-							unsigned int transformLoc = glGetUniformLocation(o, "transform");
-							glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+					// draw our first triangle
+					glUseProgram(o);
+					unsigned int transformLoc = glGetUniformLocation(o, "transform");
+					glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-							glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-							//glDrawArrays(GL_TRIANGLES, 0, 6);
-							glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-						}
-						if (cam[i][j] == 'v') {
-							glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-							transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
-							int vertexColorLocation = glGetUniformLocation(o, "ourColor");
-							glUniform4f(vertexColorLocation, 0.0f, 0.0, 1.0f, 1.0f);
-
-							// draw our first triangle
-							glUseProgram(o);
-							unsigned int transformLoc = glGetUniformLocation(o, "transform");
-							glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-							glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-							//glDrawArrays(GL_TRIANGLES, 0, 6);
-							glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-						}
-						if (cam[i][j] == ' ') {
-							glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-							transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
-							int vertexColorLocation = glGetUniformLocation(o, "ourColor");
-							glUniform4f(vertexColorLocation, 0.0f, 0.8, 1.0f, 1.0f);
-
-							// draw our first triangle
-							glUseProgram(o);
-							unsigned int transformLoc = glGetUniformLocation(o, "transform");
-							glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-							glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-							//glDrawArrays(GL_TRIANGLES, 0, 6);
-							glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-						}
-						if (cam[i][j] == 'p') {
-							glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-							transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
-							int vertexColorLocation = glGetUniformLocation(o, "ourColor");
-							glUniform4f(vertexColorLocation, 0.8f, 0.9, 1.0f, 1.0f);
-
-							// draw our first triangle
-							glUseProgram(o);
-							unsigned int transformLoc = glGetUniformLocation(o, "transform");
-							glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-							glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-							//glDrawArrays(GL_TRIANGLES, 0, 6);
-							glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-						}
-					}
-					
+					glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+					//glDrawArrays(GL_TRIANGLES, 0, 6);
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				}
-		// glBindVertexArray(0); // no need to unbind it every time 
+				if (cam[i][j] == 'v') {
+					glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+					transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
+					int vertexColorLocation = glGetUniformLocation(o, "ourColor");
+					glUniform4f(vertexColorLocation, 0.0f, 0.0, 1.0f, 1.0f);
 
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		// -------------------------------------------------------------------------------
+					// draw our first triangle
+					glUseProgram(o);
+					unsigned int transformLoc = glGetUniformLocation(o, "transform");
+					glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+					glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+					//glDrawArrays(GL_TRIANGLES, 0, 6);
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				}
+				if (cam[i][j] == ' ') {
+					glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+					transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
+					int vertexColorLocation = glGetUniformLocation(o, "ourColor");
+					glUniform4f(vertexColorLocation, 0.0f, 0.8, 1.0f, 1.0f);
+
+					// draw our first triangle
+					glUseProgram(o);
+					unsigned int transformLoc = glGetUniformLocation(o, "transform");
+					glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+					glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+					//glDrawArrays(GL_TRIANGLES, 0, 6);
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				}
+				if (cam[i][j] == 'p') {
+					glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+					transform = glm::translate(transform, glm::vec3(j*0.033f, -i * 0.033f, 0.0f));
+					int vertexColorLocation = glGetUniformLocation(o, "ourColor");
+					glUniform4f(vertexColorLocation, 0.8f, 0.9, 1.0f, 1.0f);
+
+					// draw our first triangle
+					glUseProgram(o);
+					unsigned int transformLoc = glGetUniformLocation(o, "transform");
+					glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+					glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+					//glDrawArrays(GL_TRIANGLES, 0, 6);
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				}
+			}
+
+		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		Sleep(100);
 		
 	}
 
-	// optional: de-allocate all resources once they've outlived their purpose:
-	// ------------------------------------------------------------------------
+
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 
-	// glfw: terminate, clearing all previously allocated GLFW resources.
-	// ------------------------------------------------------------------
+
 	glfwTerminate();
 	return 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-	int v;
-	std::cin >> v;
 }
