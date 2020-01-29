@@ -1,7 +1,7 @@
 
 
-#include "pch.h"
-#include "Snake.h"
+#include "include/pch.h"
+#include "include/Snake.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
