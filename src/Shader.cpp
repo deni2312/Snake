@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../include/pch.h"
 #include "../include/Shader.h"
 
 Shader::Shader()
