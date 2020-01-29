@@ -1,5 +1,5 @@
-#include "pch.h"
-#include "Snake.h"
+#include "../include/pch.h"
+#include "../include/Snake.h"
 Snake::Snake(int x, int y,int cam[][60])
 {
 	camp = cam;
